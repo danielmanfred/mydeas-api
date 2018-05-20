@@ -1,0 +1,30 @@
+{
+  "name": "mydeas-api",
+  "version": "1.0.0",
+  "description": "API Rest para a plataforma Mydeas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielmanfred/mydeas-api.git"
+  },
+  "keywords": [
+    "node",
+    "restful",
+    "api",
+    "mongodb",
+    "mysql",
+    "express"
+  ],
+  "author": "Equipe Neo4j",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielmanfred/mydeas-api/issues"
+  },
+  "homepage": "https://github.com/danielmanfred/mydeas-api#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
