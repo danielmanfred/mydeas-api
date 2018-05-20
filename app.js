@@ -6,3 +6,5 @@ app.use((req, res, next) => {
         message: 'Está funcionando Perfeitamente bem!'
     });
 });
+
+module.exports = app;
