@@ -7,7 +7,14 @@ import {handleError} from './error.handler'
 
 export class Server {
 
-    application: restify.Server
+    application: restify.Server 
+
+    respond(req, res, next) {
+        res.send({
+            name: 'mydeas-api',
+            version: '0.0.3'
+        })
+    }
 
     initalizeDb(): any {
         (<any>mongoose).Promise = global.Promise
@@ -18,10 +25,10 @@ export class Server {
         return new Promise((resolve, reject) => {
             try {
                 this.application = restify.createServer({
-                    name: 'elo-api',
-                    version: '0.0.5'
+                    name: 'mydeas-api',
+                    version: '0.0.3'
                 })
-                
+
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
                 this.application.use(mergePatchBodyParser)
@@ -42,7 +49,7 @@ export class Server {
             }
         })
     }
-//5:35
+
     bootstrap(routers: Router[] = []): Promise<Server> {
         return this.initalizeDb().then(() => this.initRoutes(routers).then(() => this))
     }

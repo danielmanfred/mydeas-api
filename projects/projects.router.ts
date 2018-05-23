@@ -1,15 +1,15 @@
+import { Project } from './projects.model';
 import * as restify from 'restify'
 import * as mongoose from 'mongoose'
 import {ModelRouter} from '../common/model-router'
-import {Hotel} from './hotels.model'
 import { NotFoundError } from 'restify-errors';
 
-class HotelRouter extends ModelRouter<Hotel> {
+class ProjectRouter extends ModelRouter<Project> {
     constructor() {
-        super(Hotel)
+        super(Project)
     }
 
-    protected prepareOne(query: mongoose.DocumentQuery<Hotel,Hotel>): mongoose.DocumentQuery<Hotel,Hotel> {
+    protected prepareOne(query: mongoose.DocumentQuery<Project,Project>): mongoose.DocumentQuery<Project,Project> {
         return query //.populate('owner', 'name')
     }
 
@@ -42,16 +42,16 @@ class HotelRouter extends ModelRouter<Hotel> {
     }*/
 
     applyRoutes(application: restify.Server) {
-        application.get('/hotels', this.findAll)
-        application.get('/hotels/:id', [this.validadeId, this.findById])
-        application.post('/hotels', this.save)
-        application.put('/hotels/:id', [this.validadeId, this.replace])
-        application.patch('/hotels/:id', [this.validadeId, this.update])
-        application.del('/hotels/:id', [this.validadeId, this.delete])
+        application.get('/projects', this.findAll)
+        application.get('/projects/:id', [this.validadeId, this.findById])
+        application.post('/projects', this.save)
+        application.put('/projects/:id', [this.validadeId, this.replace])
+        application.patch('/projects/:id', [this.validadeId, this.update])
+        application.del('/projects/:id', [this.validadeId, this.delete])
 
         //application.get('/hotels/:id/bookingChannel', [this.validadeId, this.findBookingChannel])
         //application.put('/hotels/:id/bookingChannel', [this.validadeId, this.replaceBookingChannel])
     }
 }
 
-export const hotelRouter = new HotelRouter()
+export const projectRouter = new ProjectRouter()

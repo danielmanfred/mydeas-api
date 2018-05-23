@@ -6,8 +6,15 @@ export abstract class Router extends EventEmitter {
 
     abstract applyRoutes(application: restify.Server)
 
+    respond(req, res, next) {
+        res.send({
+            name: 'mydeas-api',
+            version: '0.0.3'
+        })
+    }
+
     render(res: restify.Response, next: restify.Next) {
-        return (document) => {
+        return (document) => {  
             if (document) {
                 this.emit('beforeRender', document)
                 res.json(document)

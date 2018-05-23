@@ -10,16 +10,4 @@ consumes:
   - application/json
 produces: 
   - application/json
-paths: 
-  /hotels:
-    get:
-      description: Retorna todos os hoteis cadastrados
-      summary: Get hotels
-      parameters:
-        - name: name
-          in: query
-          type: string
-        - name: email
-          in: query
-          type: string
-        
+paths:  

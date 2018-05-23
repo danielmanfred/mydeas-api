@@ -5,8 +5,8 @@ export interface Project extends mongoose.Document {
     description: string,
     dateRegister: Date,
     pic: string,
-    owner: User,
-    partners: User[],
+    //owner: User,
+    //partners: User[],
 }
 
 const projectSchema = new mongoose.Schema({
@@ -24,7 +24,7 @@ const projectSchema = new mongoose.Schema({
     pic: {
         type: String
     },
-    owner: {
+    /*owner: {
         type: userSchema,
         required: true
     },
@@ -32,7 +32,7 @@ const projectSchema = new mongoose.Schema({
         type: [userSchema],
         required: false,
         default: []
-    }
+    }*/
 })
 
 export const Project = mongoose.model<Project>('Project', projectSchema)
