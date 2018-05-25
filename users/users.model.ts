@@ -1,3 +1,4 @@
+import { Project } from './../projects/projects.model';
 import * as mongoose from 'mongoose'
 
 export interface User extends mongoose.Document {
@@ -5,8 +6,9 @@ export interface User extends mongoose.Document {
     email: string,
     gender: string,
     password: string,
+    pic: string,
     dateRegister: Date,
-    level: string,
+    projects: Project[]
     address: {
         city: string,
         state: string,
@@ -37,29 +39,30 @@ const userSchema = new mongoose.Schema({
         select: false,
         required: true
     },
+    pic: {
+        type: String
+    },
     dateRegister: {
         type: Date,
         required: false
     },
-    level: {
-        type: String,
-        required: false,
-        enum: ['Owner', 'Partner']
+    projects: {
+        
     },
     address: {
         city: {
             type: String,
-            required: true,
+            required: false,
             maxlength: 50
         },
         state: {
             type: String,
-            required: true,
+            required: false,
             maxlength: 50
         },
         country: {
             type: String,
-            required: true,
+            required: false,
             maxlength: 50
         }
     }

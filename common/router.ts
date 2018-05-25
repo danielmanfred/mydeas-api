@@ -8,8 +8,8 @@ export abstract class Router extends EventEmitter {
 
     respond(req, res, next) {
         res.send({
-            name: 'mydeas-api',
-            version: '0.0.3'
+            name: 'Mydeas API',
+            version: '0.1.0'
         })
     }
 

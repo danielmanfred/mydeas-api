@@ -1,8 +1,8 @@
-import { Project } from './projects.model';
 import * as restify from 'restify'
 import * as mongoose from 'mongoose'
-import {ModelRouter} from '../common/model-router'
+import { ModelRouter } from '../common/model-router'
 import { NotFoundError } from 'restify-errors';
+import { Project } from './projects.model';
 
 class ProjectRouter extends ModelRouter<Project> {
     constructor() {
@@ -13,33 +13,32 @@ class ProjectRouter extends ModelRouter<Project> {
         return query //.populate('owner', 'name')
     }
 
-
-    /*findBookingChannel = (req, res, next) => {
-        Hotel.findById(req.params.id, '+bookingChannel').then(hotel => {
-            if (!hotel) {
-                throw new NotFoundError('Hotel not found')
+    findNews = (req, res, next) => {
+        Project.findById(req.params.id, '+news').then(project => {
+            if (!project) {
+                throw new NotFoundError('Project not found')
             }
             else {
-                res.json(hotel.bookingChannel)
+                res.json(project.news)
                 return next()
             }
         }).catch(next)
     }
 
-    replaceBookingChannel = (req, res, next) => {
-        Hotel.findById(req.params.id).then(hotel => {
-            if (!hotel) {
-                throw new NotFoundError('Hotel not found')
+    replaceNews = (req, res, next) => {
+        Project.findById(req.params.id).then(project => {
+            if (!project) {
+                throw new NotFoundError('Project not found')
             }
             else {
-                hotel.bookingChannel = req.body
-                return hotel.save()
+                project.news = req.body // Array de news
+                return project.save()
             }
-        }).then(hotel => {
-            res.json(hotel.bookingChannel)
+        }).then(project => {
+            res.json(project.news)
             return next()
         }).catch(next)
-    }*/
+    }
 
     applyRoutes(application: restify.Server) {
         application.get('/projects', this.findAll)
@@ -49,8 +48,8 @@ class ProjectRouter extends ModelRouter<Project> {
         application.patch('/projects/:id', [this.validadeId, this.update])
         application.del('/projects/:id', [this.validadeId, this.delete])
 
-        //application.get('/hotels/:id/bookingChannel', [this.validadeId, this.findBookingChannel])
-        //application.put('/hotels/:id/bookingChannel', [this.validadeId, this.replaceBookingChannel])
+        application.get('/projects/:id/news', [this.validadeId, this.findNews])
+        application.put('/projects/:id/news', [this.validadeId, this.replaceNews])
     }
 }
 
