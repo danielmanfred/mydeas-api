@@ -1,3 +1,4 @@
+import { Category } from './../categories/categories.model';
 import { User } from './../users/users.model';
 import * as mongoose from 'mongoose'
 
@@ -5,19 +6,21 @@ export interface News extends mongoose.Document {
     title: string,
     content: string,
     isPrivate: boolean,
-    dateRegister: Date
+    date: Date
 }
 
 export interface Project extends mongoose.Document {
     name: string,
     description: string,
-    dateRegister: Date,
+    date: Date,
     logo: string,
-    isActive: boolean
+    isActive: boolean,
+    tags: string[],
     news: News[],
-    owner: User,
-    partners: User[],
-    candidates: User[]
+    category: mongoose.Types.ObjectId | Category,
+    owner: mongoose.Types.ObjectId | User,
+    partners: [mongoose.Types.ObjectId] | User[],
+    candidates: [mongoose.Types.ObjectId] | User[]
 }
 
 const newsSchema = new mongoose.Schema({
@@ -31,7 +34,7 @@ const newsSchema = new mongoose.Schema({
     isPrivate: {
         type: Boolean
     },
-    dateRegister: {
+    date: {
         type: Date
     }
 })
@@ -44,7 +47,7 @@ const projectSchema = new mongoose.Schema({
     description: {
         type: String
     },
-    dataRegister: {
+    data: {
         type: Date,
         required: false
     },
@@ -54,21 +57,36 @@ const projectSchema = new mongoose.Schema({
     isActive: {
         type: Boolean
     },
+    tags: [{
+        type: String
+    }],
     news: {
         type: [newsSchema],
         required: false,
         select: false,
         default: []
-    }
-    /*owner: {
-        type: userSchema,
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     partners: {
-        type: [userSchema],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User',
         required: false,
         default: []
-    }*/
+    },
+    candidates: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User',
+        required: false,
+        default: []
+    }
 })
 
 export const Project = mongoose.model<Project>('Project', projectSchema)    

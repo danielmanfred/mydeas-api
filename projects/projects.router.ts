@@ -9,9 +9,9 @@ class ProjectRouter extends ModelRouter<Project> {
         super(Project)
     }
 
-    protected prepareOne(query: mongoose.DocumentQuery<Project,Project>): mongoose.DocumentQuery<Project,Project> {
-        return query //.populate('owner', 'name')
-    }
+    /*protected prepareOne(query: mongoose.DocumentQuery<Project,Project>): mongoose.DocumentQuery<Project,Project> {
+        return query.populate('category', 'name')
+    }*/
 
     findNews = (req, res, next) => {
         Project.findById(req.params.id, '+news').then(project => {
@@ -38,6 +38,10 @@ class ProjectRouter extends ModelRouter<Project> {
             res.json(project.news)
             return next()
         }).catch(next)
+    }
+
+    findById = (req, res, next) => {
+        this.model.findById(req.params.id).populate('category', 'name').then(this.render(res, next)).catch(next)
     }
 
     applyRoutes(application: restify.Server) {
