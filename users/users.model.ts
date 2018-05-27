@@ -2,16 +2,17 @@ import { Project } from './../projects/projects.model';
 import * as mongoose from 'mongoose'
 
 export interface User extends mongoose.Document {
-    name: string,
-    email: string,
-    gender: string,
-    password: string,
-    pic: string,
-    dateRegister: Date,
-    projects: [mongoose.Types.ObjectId] | Project[],
+    name: string
+    email: string
+    gender: string
+    password: string
+    pic: string
+    dateRegister: Date
+    projects: [mongoose.Types.ObjectId] | Project[]
+    isAdmin: boolean
     address: {
-        city: string,
-        state: string,
+        city: string
+        state: string
         country: string
     }
 }
@@ -51,6 +52,10 @@ const userSchema = new mongoose.Schema({
         ref: 'Project',
         default: []  
     }],
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
     address: {
         city: {
             type: String,

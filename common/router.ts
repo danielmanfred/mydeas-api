@@ -9,7 +9,7 @@ export abstract class Router extends EventEmitter {
     respond(req, res, next) {
         res.send({
             name: 'Mydeas API',
-            version: '0.1.1'
+            version: '0.1.2'
         })
     }
 
@@ -22,7 +22,7 @@ export abstract class Router extends EventEmitter {
             else {
                 throw new NotFoundError('Document not found')
             }
-            return next()
+            return next(false)
         }
     }
 
@@ -37,6 +37,7 @@ export abstract class Router extends EventEmitter {
             else {
                 res.json([])
             }
+            return next(false)
         }
     }
 }

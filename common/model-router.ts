@@ -40,7 +40,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         }
         this.model.update({_id: req.params.id}, req.body, options).exec().then(result => {
             if (result.n) {
-                return this.model.findById(req.params.id)
+                return this.prepareOne(this.model.findById(req.params.id))
             }
             else {
                 throw new NotFoundError('Document not found')
