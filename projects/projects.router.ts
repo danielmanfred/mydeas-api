@@ -9,6 +9,12 @@ class ProjectRouter extends ModelRouter<Project> {
         super(Project)
     }
 
+    envelope(document) {
+        let resource = super.envelope(document)
+        resource._links.news = `${this.basePath}/${resource._id}/news`
+        return resource
+    }
+
     protected prepareOne(query: mongoose.DocumentQuery<Project,Project>): mongoose.DocumentQuery<Project,Project> {
         return query.populate('category', 'name').populate('owner', 'name')
     }
@@ -40,22 +46,16 @@ class ProjectRouter extends ModelRouter<Project> {
         }).catch(next)
     }
 
-    /*findById = (req, res, next) => {
-        this.model.findById(req.params.id).populate('category', 'name').populate('owner', 'name')
-            .then(this.render(res, next))
-            .catch(next)
-    }*/
-
     applyRoutes(application: restify.Server) {
-        application.get('/projects', this.findAll)
-        application.get('/projects/:id', [this.validadeId, this.findById])
-        application.post('/projects', this.save)
-        application.put('/projects/:id', [this.validadeId, this.replace])
-        application.patch('/projects/:id', [this.validadeId, this.update])
-        application.del('/projects/:id', [this.validadeId, this.delete])
+        application.get(`${this.basePath}`, this.findAll)
+        application.get(`${this.basePath}/:id`, [this.validadeId, this.findById])
+        application.post(`${this.basePath}`, this.save)
+        application.put(`${this.basePath}/:id`, [this.validadeId, this.replace])
+        application.patch(`${this.basePath}/:id`, [this.validadeId, this.update])
+        application.del(`${this.basePath}/:id`, [this.validadeId, this.delete])
 
-        application.get('/projects/:id/news', [this.validadeId, this.findNews])
-        application.put('/projects/:id/news', [this.validadeId, this.replaceNews])
+        application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews])
+        application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews])
     }
 }
 

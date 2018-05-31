@@ -14,7 +14,10 @@ class UserRouter extends ModelRouter<User> {
 
     findByEmail = (req, res, next) => {
         if (req.query.email) {
-            User.find({email: req.query.email}).then(this.renderAll(res, next)).catch(next)
+            User.findByEmail(req.query.email)
+                .then(user => user ? [user] : [])
+                .then(this.renderAll(res, next))
+                .catch(next)
         }
         else {
             next()
@@ -24,13 +27,13 @@ class UserRouter extends ModelRouter<User> {
     applyRoutes(application: restify.Server) {
 
         application.get('/', this.respond)
-        application.get({path: '/users', version: '2.0.0'}, [this.findByEmail, this.findAll])
-        application.get({path: '/users', version: '1.0.0'}, this.findAll)
-        application.get('/users/:id', [this.validadeId, this.findById])
-        application.post('/users', this.save)
-        application.put('/users/:id', [this.validadeId, this.replace])
-        application.patch('/users/:id', [this.validadeId, this.update])
-        application.del('/users/:id', [this.validadeId, this.delete])
+        application.get({path: `${this.basePath}`, version: '2.0.0'}, [this.findByEmail, this.findAll])
+        //application.get({path: '/users', version: '1.0.0'}, this.findAll)
+        application.get(`${this.basePath}/:id`, [this.validadeId, this.findById])
+        application.post(`${this.basePath}`, this.save)
+        application.put(`${this.basePath}/:id`, [this.validadeId, this.replace])
+        application.patch(`${this.basePath}/:id`, [this.validadeId, this.update])
+        application.del(`${this.basePath}/:id`, [this.validadeId, this.delete])
     }
 }
 
