@@ -9,13 +9,6 @@ export class Server {
 
     application: restify.Server 
 
-    respond(req, res, next) {
-        res.send({
-            name: 'mydeas-api',
-            version: '0.0.3'
-        })
-    }
-
     initalizeDb(): any {
         (<any>mongoose).Promise = global.Promise
         return mongoose.connect(environment.db.url)
@@ -24,10 +17,7 @@ export class Server {
     initRoutes(routers: Router[]): Promise<any> {
         return new Promise((resolve, reject) => {
             try {
-                this.application = restify.createServer({
-                    name: 'mydeas-api',
-                    version: '0.0.3'
-                })
+                this.application = restify.createServer()
 
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
@@ -52,5 +42,9 @@ export class Server {
 
     bootstrap(routers: Router[] = []): Promise<Server> {
         return this.initalizeDb().then(() => this.initRoutes(routers).then(() => this))
+    }
+
+    shutdown() {
+        return mongoose.disconnect().then(() => this.application.close())
     }
 }
