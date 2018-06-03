@@ -2,7 +2,8 @@ import * as restify from 'restify'
 import { ModelRouter } from '../common/model-router'
 import { User } from './users.model'
 import { NotFoundError } from 'restify-errors'
-import { authenticate } from './../security/auth.handler';
+import { authenticate } from './../security/auth.handler'
+import { authorize } from './../security/authz.handler'
 
 class UserRouter extends ModelRouter<User> {
 
@@ -34,9 +35,9 @@ class UserRouter extends ModelRouter<User> {
         application.get(`${this.basePath}`, [this.findByEmail, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validadeId, this.findById])
         application.post(`${this.basePath}`, this.save)
-        application.put(`${this.basePath}/:id`, [this.validadeId, this.replace])
-        application.patch(`${this.basePath}/:id`, [this.validadeId, this.update])
-        application.del(`${this.basePath}/:id`, [this.validadeId, this.delete])
+        application.put(`${this.basePath}/:id`, [authorize('user'), this.validadeId, this.replace])
+        application.patch(`${this.basePath}/:id`, [authorize('user'), this.validadeId, this.update])
+        application.del(`${this.basePath}/:id`, [authorize('admin', 'user'), this.validadeId, this.delete])
 
         application.post(`${this.basePath}/authenticate`, authenticate)
     }

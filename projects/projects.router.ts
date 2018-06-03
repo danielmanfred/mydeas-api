@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose'
 import { ModelRouter } from '../common/model-router'
 import { NotFoundError } from 'restify-errors';
 import { Project } from './projects.model';
+import { authorize } from './../security/authz.handler'
 
 class ProjectRouter extends ModelRouter<Project> {
     constructor() {
@@ -52,7 +53,7 @@ class ProjectRouter extends ModelRouter<Project> {
         application.post(`${this.basePath}`, this.save)
         application.put(`${this.basePath}/:id`, [this.validadeId, this.replace])
         application.patch(`${this.basePath}/:id`, [this.validadeId, this.update])
-        application.del(`${this.basePath}/:id`, [this.validadeId, this.delete])
+        application.del(`${this.basePath}/:id`, [authorize('admin'), this.validadeId, this.delete])
 
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews])
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews])

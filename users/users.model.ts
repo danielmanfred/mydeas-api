@@ -11,7 +11,7 @@ export interface User extends mongoose.Document {
     pic: string
     dateRegister: Date
     projects: [mongoose.Types.ObjectId] | Project[]
-    isAdmin: boolean
+    profiles: string[]
     address: {
         city: string
         state: string
@@ -19,6 +19,7 @@ export interface User extends mongoose.Document {
     }
 
     matches(password: string): boolean
+    hasAny(...profiles: string[]): boolean
 }
 
 export interface UserModel extends mongoose.Model<User> {
@@ -60,9 +61,9 @@ const userSchema = new mongoose.Schema({
         ref: 'Project',
         default: []  
     }],
-    isAdmin: {
-        type: Boolean,
-        default: false
+    profiles: {
+        type: [String],
+        required: false
     },
     address: {
         city: {
@@ -89,6 +90,10 @@ userSchema.statics.findByEmail = function(email: string, projection: string) {
 
 userSchema.methods.matches = function(password: string): boolean {
     return bcrypt.compareSync(password, this.password)
+}
+
+userSchema.methods.hasAny = function(...profiles: string[]): boolean {
+    return profiles.some(profile => this.profiles.indexOf(profile) !== -1)
 }
 
 const hashPassword = (obj, next) => {

@@ -1,7 +1,8 @@
 import * as restify from 'restify'
 import * as mongoose from 'mongoose'
 import { Category } from './categories.model'
-import { ModelRouter } from '../common/model-router';
+import { ModelRouter } from '../common/model-router'
+import { authorize } from './../security/authz.handler'
 
 class CategoryRouter extends ModelRouter<Category> {
     constructor() {
@@ -12,10 +13,10 @@ class CategoryRouter extends ModelRouter<Category> {
 
         application.get(`${this.basePath}`, this.findAll)
         application.get(`${this.basePath}/:id`, [this.validadeId, this.findById])
-        application.post(`${this.basePath}`, this.save)
-        application.put(`${this.basePath}/:id`, [this.validadeId, this.replace])
-        application.patch(`${this.basePath}/:id`, [this.validadeId, this.update])
-        application.del(`${this.basePath}/:id`, [this.validadeId, this.delete])
+        application.post(`${this.basePath}`, [authorize('admin'), this.save])
+        application.put(`${this.basePath}/:id`, [authorize('admin'), this.validadeId, this.replace])
+        application.patch(`${this.basePath}/:id`, [authorize('admin'), this.validadeId, this.update])
+        application.del(`${this.basePath}/:id`, [authorize('admin'), this.validadeId, this.delete])
     }
 }
 

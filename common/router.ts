@@ -17,7 +17,7 @@ export abstract class Router extends EventEmitter {
     respond(req, res, next) {
         res.send({
             name: 'Mydeas API',
-            version: '0.1.5'
+            version: '0.1.6'
         })
     }
 
