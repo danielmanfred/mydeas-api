@@ -1,3 +1,4 @@
+import { logger } from './../common/logger';
 import * as restify from 'restify' 
 import * as mongoose from 'mongoose'
 import * as fs from 'fs'
@@ -21,7 +22,8 @@ export class Server {
             try {
                 const options: restify.ServerOptions = {
                     name: 'mydeas-api',
-                    version: '1.0.0'
+                    version: '1.0.0',
+                    log: logger
                 }
 
                 if (environment.security.enableHTTPS) {
@@ -30,6 +32,10 @@ export class Server {
                 }
 
                 this.application = restify.createServer(options)
+
+                this.application.pre(restify.plugins.requestLogger({
+                    log: logger
+                }))
 
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
@@ -46,6 +52,16 @@ export class Server {
                 })
 
                 this.application.on('restifyError', handleError)
+                // (req, res, route, error)
+                /*this.application.on('after', restify.plugins.auditLogger({
+                    log: logger,
+                    event: 'after',
+                    server: this.application
+                }))
+
+                this.application.on('audit', data => {
+
+                })*/
             }
             catch(error) {
                 reject(error)

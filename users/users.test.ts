@@ -5,11 +5,13 @@ import { Server } from './../server/server'
 import { User } from './users.model'
 import { userRouter } from './users.router'
 
-let address: string = (<any>global).address
+const address: string = (<any>global).address
+const auth: string = (<any>global).auth
 
 test('get /users', () => {
     return request(address)
                 .get('/users')
+                .set('Authorization', auth)
                 .then(response => {
                     expect(response.status).toBe(200)
                     expect(response.body.items).toBeInstanceOf(Array)
@@ -19,6 +21,7 @@ test('get /users', () => {
 test('post /users', () => {
     return request(address)
                 .post('/users')
+                .set('Authorization', auth)
                 .send({
                     name: 'usuario3',
                     email: 'usuario3@email.com',
@@ -38,6 +41,7 @@ test('post /users', () => {
 test('get /users/aaa - not found', () => {
     return request(address)
                 .get('/users/aaa')
+                .set('Authorization', auth)
                 .then(response => {
                     expect(response.status).toBe(404)
                 })
@@ -47,17 +51,18 @@ test('get /users/aaa - not found', () => {
 test('patch /users/:id', () => {
     return request(address)
                 .post('/users')
+                .set('Authorization', auth)
                 .send({
                     name: 'usuario4',
                     email: 'usuario4@email.com',
                     password: 'senha4'
                 })
                 .then(response => request(address).patch(`/users/${response.body._id}`)
-                                                  .send({name: 'usario4 - patch'}))
+                                                  .send({name: 'usuario4 - patch'}))
                 .then(response => {
                     expect(response.status).toBe(200)
                     expect(response.body._id).toBeDefined()
-                    expect(response.body.name).toBe('usario4 - patch')
+                    expect(response.body.name).toBe('usuario4 - patch')
                     expect(response.body.email).toBe('usuario4@email.com')
                     expect(response.body.password).toBeUndefined()
                 })
