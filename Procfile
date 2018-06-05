@@ -1,1 +1,1 @@
-web: node dist/main.js
+werker: node dist/main.js
