@@ -32,6 +32,9 @@
     "type": "git",
     "url": "https://github.com/danielmanfred/mydeas-api.git"
   },
+  "engines": {
+    "node": "8.9.4"
+  },
   "dependencies": {
     "bcrypt": "^2.0.1",
     "jsonwebtoken": "^8.2.2",
