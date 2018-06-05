@@ -5,7 +5,8 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "node dist/main.js",
-    "test": "ts-node jest.startup.ts"
+    "test": "ts-node jest.startup.ts",
+    "postinstall": "npm install"
   },
   "keywords": [],
   "author": "Daniel Brito & Equipe Neo4j",
