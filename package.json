@@ -4,6 +4,7 @@
   "description": "Plataforma de facilitação de parcerias em startups",
   "main": "dist/main.js",
   "scripts": {
+    "start": "node dist/main.js",
     "test": "ts-node jest.startup.ts"
   },
   "keywords": [],
