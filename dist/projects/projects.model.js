@@ -44,12 +44,14 @@ const projectSchema = new mongoose.Schema({
         default: []
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
+        //type: mongoose.Schema.Types.ObjectId,
+        //ref: 'Category'
+        type: String
     },
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        //type: mongoose.Schema.Types.ObjectId,
+        //ref: 'User',
+        type: String,
         required: true
     },
     partners: {

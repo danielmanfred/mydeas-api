@@ -54,7 +54,8 @@ const userSchema = new mongoose.Schema({
     },
     dateRegister: {
         type: Date,
-        required: false
+        required: true,
+        default: Date.now
     },
     projects: [{
         type: mongoose.Schema.Types.ObjectId,

@@ -17,8 +17,10 @@ export interface Project extends mongoose.Document {
     isActive: boolean,
     tags: string[],
     news: News[],
-    category: mongoose.Types.ObjectId | Category,
-    owner: mongoose.Types.ObjectId | User,
+    //category: mongoose.Types.ObjectId | Category,
+    //owner: mongoose.Types.ObjectId | User,
+    category: string
+    owner: string
     partners: [mongoose.Types.ObjectId] | User[],
     candidates: [mongoose.Types.ObjectId] | User[]
 }
@@ -67,12 +69,14 @@ const projectSchema = new mongoose.Schema({
         default: []
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
+        //type: mongoose.Schema.Types.ObjectId,
+        //ref: 'Category'
+        type: String
     },
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        //type: mongoose.Schema.Types.ObjectId,
+        //ref: 'User',
+        type: String,
         required: true
     },
     partners: {

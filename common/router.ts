@@ -25,7 +25,8 @@ export abstract class Router extends EventEmitter {
         return (document) => {  
             if (document) {
                 this.emit('beforeRender', document)
-                res.json(this.envelope(document))
+                //res.json(this.envelope(document))
+                res.json(document)
             }
             else {
                 throw new NotFoundError('Document not found')
@@ -39,12 +40,14 @@ export abstract class Router extends EventEmitter {
             if (documents) {
                 documents.forEach((document, index, array) => {
                     this.emit('beforeRender', document)
-                    array[index] = this.envelope(document)
+                    //array[index] = this.envelope(document)
                 })
-                res.json(this.envelopeAll(documents, options))
+                //res.json(this.envelopeAll(documents, options))
+                res.json(documents)
             }
             else {
-                res.json(this.envelopeAll([]))
+                //res.json(this.envelopeAll([]))
+                res.json([])
             }
             return next(false)
         }
