@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_router_1 = require("../common/model-router");
 const users_model_1 = require("./users.model");
-const auth_handler_1 = require("./../security/auth.handler");
-const authz_handler_1 = require("./../security/authz.handler");
 class UserRouter extends model_router_1.ModelRouter {
     constructor() {
         super(users_model_1.User);
@@ -30,10 +28,13 @@ class UserRouter extends model_router_1.ModelRouter {
         application.get(`${this.basePath}`, [this.findByEmail, this.findAll]);
         application.get(`${this.basePath}/:id`, [this.validadeId, this.findById]);
         application.post(`${this.basePath}`, this.save);
-        application.put(`${this.basePath}/:id`, [authz_handler_1.authorize('user'), this.validadeId, this.replace]);
-        application.patch(`${this.basePath}/:id`, [authz_handler_1.authorize('user'), this.validadeId, this.update]);
-        application.del(`${this.basePath}/:id`, [authz_handler_1.authorize('admin', 'user'), this.validadeId, this.delete]);
-        application.post(`${this.basePath}/authenticate`, auth_handler_1.authenticate);
+        application.put(`${this.basePath}/:id`, [this.validadeId, this.replace]);
+        application.patch(`${this.basePath}/:id`, [this.validadeId, this.update]);
+        application.del(`${this.basePath}/:id`, [this.validadeId, this.delete]);
+        //application.put(`${this.basePath}/:id`, [authorize('user'), this.validadeId, this.replace])
+        //application.patch(`${this.basePath}/:id`, [authorize('user'), this.validadeId, this.update])
+        //application.del(`${this.basePath}/:id`, [authorize('admin', 'user'), this.validadeId, this.delete])
+        //application.post(`${this.basePath}/authenticate`, authenticate)
     }
 }
 exports.userRouter = new UserRouter();

@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema({
     },
     dateRegister: {
         type: Date,
-        required: false
+        required: true,
+        default: Date.now
     },
     projects: [{
             type: mongoose.Schema.Types.ObjectId,
@@ -40,7 +41,7 @@ const userSchema = new mongoose.Schema({
         }],
     profiles: {
         type: [String],
-        required: false
+        default: 'user'
     },
     address: {
         city: {

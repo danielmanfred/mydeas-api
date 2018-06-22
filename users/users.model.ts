@@ -11,7 +11,7 @@ export interface User extends mongoose.Document {
     pic: string
     dateRegister: Date
     projects: [mongoose.Types.ObjectId] | Project[]
-    profiles: string[]
+    profiles: string[],
     address: {
         city: string
         state: string
@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema({
     }],
     profiles: {
         type: [String],
-        required: false
+        default: 'user'
     },
     address: {
         city: {

@@ -10,10 +10,12 @@ const newsSchema = new mongoose.Schema({
         type: String
     },
     isPrivate: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     date: {
-        type: Date
+        type: Date,
+        default: Date.now
     }
 });
 const projectSchema = new mongoose.Schema({
@@ -26,13 +28,15 @@ const projectSchema = new mongoose.Schema({
     },
     data: {
         type: Date,
-        required: false
+        required: true,
+        default: Date.now
     },
     logo: {
         type: String
     },
     isActive: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
     tags: [{
             type: String
@@ -44,14 +48,12 @@ const projectSchema = new mongoose.Schema({
         default: []
     },
     category: {
-        //type: mongoose.Schema.Types.ObjectId,
-        //ref: 'Category'
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
     },
     owner: {
-        //type: mongoose.Schema.Types.ObjectId,
-        //ref: 'User',
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     partners: {

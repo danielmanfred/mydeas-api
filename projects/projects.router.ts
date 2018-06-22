@@ -17,7 +17,15 @@ class ProjectRouter extends ModelRouter<Project> {
     }
 
     protected prepareOne(query: mongoose.DocumentQuery<Project,Project>): mongoose.DocumentQuery<Project,Project> {
-        return query.populate('category', 'name').populate('owner', 'name')
+        return query.populate('category', 'name')  //.populate('owner', 'name')
+    }
+
+    findAll = (req, res, next) => {
+        this.model.find().then(this.renderAll(res, next)).catch(next)
+    }
+
+    findById = (req, res, next) => {
+        this.prepareOne(this.model.findById(req.params.id)).then(this.render(res, next)).catch(next)
     }
 
     findNews = (req, res, next) => {

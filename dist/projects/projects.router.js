@@ -7,6 +7,12 @@ const authz_handler_1 = require("./../security/authz.handler");
 class ProjectRouter extends model_router_1.ModelRouter {
     constructor() {
         super(projects_model_1.Project);
+        this.findAll = (req, res, next) => {
+            this.model.find().then(this.renderAll(res, next)).catch(next);
+        };
+        this.findById = (req, res, next) => {
+            this.prepareOne(this.model.findById(req.params.id)).then(this.render(res, next)).catch(next);
+        };
         this.findNews = (req, res, next) => {
             projects_model_1.Project.findById(req.params.id, '+news').then(project => {
                 if (!project) {
@@ -39,7 +45,7 @@ class ProjectRouter extends model_router_1.ModelRouter {
         return resource;
     }
     prepareOne(query) {
-        return query.populate('category', 'name').populate('owner', 'name');
+        return query.populate('category', 'name'); //.populate('owner', 'name')
     }
     applyRoutes(application) {
         application.get(`${this.basePath}`, this.findAll);
