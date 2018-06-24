@@ -38,6 +38,31 @@ class ProjectRouter extends model_router_1.ModelRouter {
                 return next();
             }).catch(next);
         };
+        this.findCandidates = (req, res, next) => {
+            projects_model_1.Project.findById(req.params.id, '+candidates').then(project => {
+                if (!project) {
+                    throw new restify_errors_1.NotFoundError('Project not found');
+                }
+                else {
+                    res.json(project.candidates);
+                    return next();
+                }
+            }).catch(next);
+        };
+        this.replaceCandidates = (req, res, next) => {
+            projects_model_1.Project.findById(req.params.id).then(project => {
+                if (!project) {
+                    throw new restify_errors_1.NotFoundError('Project not found');
+                }
+                else {
+                    project.candidates = req.body; // Array de candidates
+                    return project.save();
+                }
+            }).then(project => {
+                res.json(project.candidates);
+                return next();
+            }).catch(next);
+        };
     }
     envelope(document) {
         let resource = super.envelope(document);
@@ -56,6 +81,8 @@ class ProjectRouter extends model_router_1.ModelRouter {
         application.del(`${this.basePath}/:id`, [authz_handler_1.authorize('admin'), this.validadeId, this.delete]);
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews]);
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews]);
+        application.get(`${this.basePath}/:id/candidates`, [this.validadeId, this.findCandidates]);
+        application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates]);
     }
 }
 exports.projectRouter = new ProjectRouter();

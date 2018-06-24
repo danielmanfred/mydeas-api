@@ -18,6 +18,17 @@ const newsSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+const applySchema = new mongoose.Schema({
+    answer1: {
+        type: String
+    },
+    answer2: {
+        type: String
+    },
+    academic: {
+        type: String
+    }
+});
 const projectSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -63,9 +74,7 @@ const projectSchema = new mongoose.Schema({
         default: []
     },
     candidates: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'User',
-        required: false,
+        type: [applySchema],
         default: []
     }
 });

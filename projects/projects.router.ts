@@ -55,6 +55,33 @@ class ProjectRouter extends ModelRouter<Project> {
         }).catch(next)
     }
 
+    findCandidates = (req, res, next) => {
+        Project.findById(req.params.id, '+candidates').then(project => {
+            if (!project) {
+                throw new NotFoundError('Project not found')
+            }
+            else {
+                res.json(project.candidates)
+                return next()
+            }
+        }).catch(next)
+    }
+
+    replaceCandidates = (req, res, next) => {
+        Project.findById(req.params.id).then(project => {
+            if (!project) {
+                throw new NotFoundError('Project not found')
+            }
+            else {
+                project.candidates = req.body // Array de candidates
+                return project.save()
+            }
+        }).then(project => {
+            res.json(project.candidates)
+            return next()
+        }).catch(next)
+    }
+
     applyRoutes(application: restify.Server) {
         application.get(`${this.basePath}`, this.findAll)
         application.get(`${this.basePath}/:id`, [this.validadeId, this.findById])
@@ -65,6 +92,9 @@ class ProjectRouter extends ModelRouter<Project> {
 
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews])
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews])
+
+        application.get(`${this.basePath}/:id/candidates`, [this.validadeId, this.findCandidates])
+        application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates])
     }
 }
 
