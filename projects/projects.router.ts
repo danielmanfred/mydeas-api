@@ -55,13 +55,18 @@ class ProjectRouter extends ModelRouter<Project> {
         }).catch(next)
     }
 
-    findCandidates = (req, res, next) => {
-        Project.findById(req.params.id, '+candidates').then(project => {
+    saveNews = (req, res, next) => {
+        let document = new Project(req.body)
+        document.save().then(this.render(res, next)).catch(next)
+    }
+
+    findApply = (req, res, next) => {
+        Project.findById(req.params.id, '+apply').then(project => {
             if (!project) {
                 throw new NotFoundError('Project not found')
             }
             else {
-                res.json(project.candidates)
+                res.json(project.apply)
                 return next()
             }
         }).catch(next)
@@ -73,11 +78,11 @@ class ProjectRouter extends ModelRouter<Project> {
                 throw new NotFoundError('Project not found')
             }
             else {
-                project.candidates = req.body // Array de candidates
+                project.apply = req.body // Array de candidates
                 return project.save()
             }
         }).then(project => {
-            res.json(project.candidates)
+            res.json(project.apply)
             return next()
         }).catch(next)
     }
@@ -93,7 +98,7 @@ class ProjectRouter extends ModelRouter<Project> {
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews])
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews])
 
-        application.get(`${this.basePath}/:id/candidates`, [this.validadeId, this.findCandidates])
+        application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply])
         application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates])
     }
 }

@@ -27,6 +27,10 @@ const applySchema = new mongoose.Schema({
     },
     academic: {
         type: String
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 });
 const projectSchema = new mongoose.Schema({
@@ -73,7 +77,7 @@ const projectSchema = new mongoose.Schema({
         required: false,
         default: []
     },
-    candidates: {
+    apply: {
         type: [applySchema],
         default: []
     }

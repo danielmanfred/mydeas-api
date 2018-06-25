@@ -13,6 +13,7 @@ export interface Apply extends mongoose.Document {
     answer1: string,
     answer2: string,
     academic: string
+    date: Date
 }
 
 export interface Project extends mongoose.Document {
@@ -26,7 +27,7 @@ export interface Project extends mongoose.Document {
     category: mongoose.Types.ObjectId | Category,
     owner: mongoose.Types.ObjectId | User,
     partners: [mongoose.Types.ObjectId] | User[],
-    candidates: Apply[]
+    apply: Apply[]
 }
 
 const newsSchema = new mongoose.Schema({
@@ -56,6 +57,10 @@ const applySchema = new mongoose.Schema({
     }, 
     academic: {
         type: String
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 })
 
@@ -103,7 +108,7 @@ const projectSchema = new mongoose.Schema({
         required: false,
         default: []
     },
-    candidates: {
+    apply: {
         type: [applySchema],
         default: []
     }
