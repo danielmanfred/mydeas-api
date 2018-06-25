@@ -114,4 +114,8 @@ const projectSchema = new mongoose.Schema({
     }
 })
 
+projectSchema.methods.findApply = function() {
+    return this.model('Apply').find()
+}
+
 export const Project = mongoose.model<Project>('Project', projectSchema)    

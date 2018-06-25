@@ -82,4 +82,7 @@ const projectSchema = new mongoose.Schema({
         default: []
     }
 });
+projectSchema.methods.findApply = function () {
+    return this.model('Apply').find();
+};
 exports.Project = mongoose.model('Project', projectSchema);
