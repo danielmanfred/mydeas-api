@@ -44,7 +44,7 @@ class UserRouter extends ModelRouter<User> {
         //application.patch(`${this.basePath}/:id`, [authorize('user'), this.validadeId, this.update])
         //application.del(`${this.basePath}/:id`, [authorize('admin', 'user'), this.validadeId, this.delete])
 
-        //application.post(`${this.basePath}/authenticate`, authenticate)
+        application.post(`${this.basePath}/authenticate`, authenticate)
     }
 }
 

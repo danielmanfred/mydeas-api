@@ -74,7 +74,7 @@ class ProjectRouter extends model_router_1.ModelRouter {
         return resource;
     }
     prepareOne(query) {
-        return query.populate('category', 'name'); //.populate('owner', 'name')
+        return query.populate('category', 'name').populate('owner', 'name');
     }
     applyRoutes(application) {
         application.get(`${this.basePath}`, this.findAll);
@@ -85,8 +85,9 @@ class ProjectRouter extends model_router_1.ModelRouter {
         application.del(`${this.basePath}/:id`, [authz_handler_1.authorize('admin'), this.validadeId, this.delete]);
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews]);
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews]);
-        application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply]);
-        application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates]);
+        //application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply])
+        //application.get(`${this.basePath}/:id/apply`, )
+        //application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates])
     }
 }
 exports.projectRouter = new ProjectRouter();

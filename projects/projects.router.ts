@@ -17,7 +17,7 @@ class ProjectRouter extends ModelRouter<Project> {
     }
 
     protected prepareOne(query: mongoose.DocumentQuery<Project,Project>): mongoose.DocumentQuery<Project,Project> {
-        return query.populate('category', 'name')  //.populate('owner', 'name')
+        return query.populate('category', 'name').populate('owner', 'name')
     }
 
     findAll = (req, res, next) => {
@@ -98,8 +98,9 @@ class ProjectRouter extends ModelRouter<Project> {
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews])
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews])
 
-        application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply])
-        application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates])
+        //application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply])
+        //application.get(`${this.basePath}/:id/apply`, )
+        //application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates])
     }
 }
 
