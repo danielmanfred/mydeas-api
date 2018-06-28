@@ -6,5 +6,5 @@ exports.getApply = async (query) => {
 }
 
 exports.addApply = async (query, update) => {
-    await Project.update(query, update)
+    await Project.updateOne(query, update)
 }

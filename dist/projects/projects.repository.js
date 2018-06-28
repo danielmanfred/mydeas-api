@@ -14,5 +14,5 @@ exports.getApply = (query) => __awaiter(this, void 0, void 0, function* () {
     return res;
 });
 exports.addApply = (query, update) => __awaiter(this, void 0, void 0, function* () {
-    yield projects_model_1.Project.update(query, update);
+    yield projects_model_1.Project.updateOne(query, update);
 });

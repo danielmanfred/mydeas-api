@@ -4,6 +4,7 @@ const model_router_1 = require("../common/model-router");
 const restify_errors_1 = require("restify-errors");
 const projects_model_1 = require("./projects.model");
 const authz_handler_1 = require("./../security/authz.handler");
+const controller = require('./projects.controller');
 class ProjectRouter extends model_router_1.ModelRouter {
     constructor() {
         super(projects_model_1.Project);
@@ -67,17 +68,6 @@ class ProjectRouter extends model_router_1.ModelRouter {
                 return next();
             }).catch(next);
         };
-        this.createApply = (req, res, next) => {
-            this.model.update({
-                apply: [
-                    {
-                        answer1: req.body.answer1,
-                        answer2: req.body.answer2,
-                        academic: req.body.academic
-                    }
-                ]
-            }, res, next).then(this.render(res, next)).catch(next);
-        };
     }
     envelope(document) {
         let resource = super.envelope(document);
@@ -87,6 +77,16 @@ class ProjectRouter extends model_router_1.ModelRouter {
     prepareOne(query) {
         return query.populate('category', 'name').populate('owner', 'name');
     }
+    /*addApply = (req, res, next) => {
+        var update = { $push: {
+            apply: {
+            answer1: req.body.answer1,
+            answer2: req.body.answer2,
+            academic: req.body.academic
+            }
+         } }
+        this.model.updateOne(req.params.id, update)
+    }*/
     applyRoutes(application) {
         application.get(`${this.basePath}`, this.findAll);
         application.get(`${this.basePath}/:id`, [this.validadeId, this.findById]);
@@ -96,7 +96,8 @@ class ProjectRouter extends model_router_1.ModelRouter {
         application.del(`${this.basePath}/:id`, [authz_handler_1.authorize('admin'), this.validadeId, this.delete]);
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews]);
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews]);
-        application.patch(`${this.basePath}/:id/apply`, [this.validadeId, this.createApply]);
+        application.patch(`${this.basePath}/:id/apply`, [this.validadeId, controller.addApply]);
+        application.get(`${this.basePath}/:id/apply`, [this.validadeId, controller.addApply]);
         //application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply])
         //application.get(`${this.basePath}/:id/apply`, )
         //application.put(`${this.basePath}/:id/canditades`, [this.validadeId, this.replaceCandidates])

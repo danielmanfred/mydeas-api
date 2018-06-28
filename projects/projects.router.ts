@@ -4,6 +4,7 @@ import { ModelRouter } from '../common/model-router'
 import { NotFoundError } from 'restify-errors';
 import { Project } from './projects.model';
 import { authorize } from './../security/authz.handler'
+const controller = require('./projects.controller')
 
 class ProjectRouter extends ModelRouter<Project> {
     constructor() {
@@ -87,17 +88,16 @@ class ProjectRouter extends ModelRouter<Project> {
         }).catch(next)
     }
 
-    createApply = (req, res, next) => {
-        this.model.update({
-            apply: [
-                {
-                    answer1: req.body.answer1,
-                    answer2: req.body.answer2,
-                    academic: req.body.academic
-                }
-               ] 
-            }, res, next).then(this.render(res, next)).catch(next)
-    }
+    /*addApply = (req, res, next) => {
+        var update = { $push: {
+            apply: {
+            answer1: req.body.answer1,
+            answer2: req.body.answer2,
+            academic: req.body.academic
+            }
+         } }
+        this.model.updateOne(req.params.id, update)
+    }*/
 
     applyRoutes(application: restify.Server) {
         application.get(`${this.basePath}`, this.findAll)
@@ -110,7 +110,8 @@ class ProjectRouter extends ModelRouter<Project> {
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews])
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews])
 
-        application.patch(`${this.basePath}/:id/apply`, [this.validadeId, this.createApply])
+        application.patch(`${this.basePath}/:id/apply`, [this.validadeId, controller.addApply])
+        application.get(`${this.basePath}/:id/apply`, [this.validadeId, controller.addApply])
 
         //application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply])
         //application.get(`${this.basePath}/:id/apply`, )

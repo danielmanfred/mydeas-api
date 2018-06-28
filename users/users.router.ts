@@ -29,6 +29,7 @@ class UserRouter extends ModelRouter<User> {
         }
     }
 
+
     applyRoutes(application: restify.Server) {
 
         application.get('/', this.respond)

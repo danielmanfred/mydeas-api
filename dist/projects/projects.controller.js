@@ -9,19 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const repository = require('./projects.repository');
 exports.getApply = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     try {
-        var data = yield ;
+        var data = yield repository.getApply();
+        res.send(data);
     }
     catch (e) {
+        res.status(500).send({
+            message: 'Fail to process the request'
+        });
     }
 });
 exports.addApply = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-    let data = {
-        answer1: req.body.answer1,
-        answer2: req.body.answar2,
-        academic: req.body.academic
-    };
+    var id = { "_id": req.body.id };
+    var update = { $push: {
+            apply: {
+                answer1: req.body.answer1,
+                answer2: req.body.answer2,
+                academic: req.body.academic
+            }
+        } };
     try {
-        yield repository.addApply(data);
+        yield repository.addApply(id, update);
         res.send({ message: 'Apply add successfully' });
     }
     catch (e) {
