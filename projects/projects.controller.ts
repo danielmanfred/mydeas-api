@@ -27,3 +27,13 @@ exports.addApply = async (req, res, next) => {
         res.status(500).send({message: 'Fail to add apply'})
     }
 }
+
+exports.getBySlug = async (req, res, next) => {
+    try {
+        var data = await repository.getBySlug(req.params.slug)
+        res.send(data)
+    }
+    catch (e) {
+        res.status(500).send({ message: 'Fail to process the request' })
+    }
+}

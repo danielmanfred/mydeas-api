@@ -8,3 +8,8 @@ exports.getApply = async (query) => {
 exports.addApply = async (query, update) => {
     await Project.updateOne(query, update)
 }
+
+exports.getBySlug = async (slug) => {
+    const res = await Project.findOne({ slug: slug })
+    return res
+}

@@ -35,3 +35,12 @@ exports.addApply = (req, res, next) => __awaiter(this, void 0, void 0, function*
         res.status(500).send({ message: 'Fail to add apply' });
     }
 });
+exports.getBySlug = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        var data = yield repository.getBySlug(req.params.slug);
+        res.send(data);
+    }
+    catch (e) {
+        res.status(500).send({ message: 'Fail to process the request' });
+    }
+});

@@ -17,6 +17,7 @@ export interface Apply extends mongoose.Document {
 }
 
 export interface Project extends mongoose.Document {
+    slug: String,
     name: string,
     description: string,
     date: Date,
@@ -65,6 +66,11 @@ const applySchema = new mongoose.Schema({
 })
 
 const projectSchema = new mongoose.Schema({
+    slug: {
+        type: String,
+        required: true,
+        unique: true
+    },
     name: {
         type: String,
         required: true

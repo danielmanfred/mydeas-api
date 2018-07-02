@@ -14,6 +14,9 @@ class ProjectRouter extends model_router_1.ModelRouter {
         this.findById = (req, res, next) => {
             this.prepareOne(this.model.findById(req.params.id)).then(this.render(res, next)).catch(next);
         };
+        this.findBySlug = (req, res, next) => {
+            this.prepareOne(this.model.findById(req.params.slug)).then(this.render(res, next)).catch(next);
+        };
         this.findNews = (req, res, next) => {
             projects_model_1.Project.findById(req.params.id, '+news').then(project => {
                 if (!project) {
@@ -90,6 +93,7 @@ class ProjectRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, this.findAll);
         application.get(`${this.basePath}/:id`, [this.validadeId, this.findById]);
+        //application.get(`${this.basePath}/slug/:slug`, controller.findBySlug)
         application.post(`${this.basePath}`, this.save);
         application.put(`${this.basePath}/:id`, [this.validadeId, this.replace]);
         application.patch(`${this.basePath}/:id`, [this.validadeId, this.update]);

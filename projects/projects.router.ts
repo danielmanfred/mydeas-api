@@ -29,6 +29,10 @@ class ProjectRouter extends ModelRouter<Project> {
         this.prepareOne(this.model.findById(req.params.id)).then(this.render(res, next)).catch(next)
     }
 
+    findBySlug = (req, res, next) => {
+        this.prepareOne(this.model.findById(req.params.slug)).then(this.render(res, next)).catch(next)
+    }
+
     findNews = (req, res, next) => {
         Project.findById(req.params.id, '+news').then(project => {
             if (!project) {
@@ -102,6 +106,7 @@ class ProjectRouter extends ModelRouter<Project> {
     applyRoutes(application: restify.Server) {
         application.get(`${this.basePath}`, this.findAll)
         application.get(`${this.basePath}/:id`, [this.validadeId, this.findById])
+        //application.get(`${this.basePath}/slug/:slug`, controller.findBySlug)
         application.post(`${this.basePath}`, this.save)
         application.put(`${this.basePath}/:id`, [this.validadeId, this.replace])
         application.patch(`${this.basePath}/:id`, [this.validadeId, this.update])

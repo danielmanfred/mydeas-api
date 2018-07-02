@@ -4,6 +4,7 @@ const logger_1 = require("./../common/logger");
 const restify = require("restify");
 const mongoose = require("mongoose");
 const fs = require("fs");
+const corsMiddleware = require("restify-cors-middleware");
 const environment_1 = require("../common/environment");
 const merge_patch_parser_1 = require("./merge-patch.parser");
 const error_handler_1 = require("./error.handler");
@@ -19,6 +20,8 @@ class Server {
                 const options = {
                     name: 'mydeas-api',
                     version: '1.0.0',
+                    certificate: fs.readFileSync('./security/keys/cert.pem'),
+                    key: fs.readFileSync('./security/keys/key.pem'),
                     log: logger_1.logger
                 };
                 if (environment_1.environment.security.enableHTTPS) {
@@ -26,26 +29,22 @@ class Server {
                         options.key = fs.readFileSync(environment_1.environment.security.key);
                 }
                 this.application = restify.createServer(options);
+                const corsOption = {
+                    preflightMaxAge: 10,
+                    origins: ['http://localhost:4200'],
+                    allowHeaders: ['authorization'],
+                    exposeHeaders: ['x-custom-header']
+                };
+                const cors = corsMiddleware(corsOption);
+                this.application.pre(cors.preflight);
                 this.application.pre(restify.plugins.requestLogger({
                     log: logger_1.logger
                 }));
+                this.application.use(cors.actual);
                 this.application.use(restify.plugins.queryParser());
                 this.application.use(restify.plugins.bodyParser());
                 this.application.use(merge_patch_parser_1.mergePatchBodyParser);
                 this.application.use(token_parser_1.tokenParser);
-                this.application.use(function (req, res, next) {
-                    // Website you wish to allow to connect
-                    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-                    // Request methods you wish to allow
-                    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-                    // Request headers you wish to allow
-                    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-                    // Set to true if you need the website to include cookies in the requests sent
-                    // to the API (e.g. in case you use sessions)
-                    //res.setHeader('Access-Control-Allow-Credentials', true);
-                    // Pass to next layer of middleware
-                    next();
-                });
                 //routes
                 for (let router of routers) {
                     router.applyRoutes(this.application);

@@ -34,6 +34,11 @@ const applySchema = new mongoose.Schema({
     }
 });
 const projectSchema = new mongoose.Schema({
+    slug: {
+        type: String,
+        required: true,
+        unique: true
+    },
     name: {
         type: String,
         required: true

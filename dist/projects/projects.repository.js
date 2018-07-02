@@ -16,3 +16,7 @@ exports.getApply = (query) => __awaiter(this, void 0, void 0, function* () {
 exports.addApply = (query, update) => __awaiter(this, void 0, void 0, function* () {
     yield projects_model_1.Project.updateOne(query, update);
 });
+exports.getBySlug = (slug) => __awaiter(this, void 0, void 0, function* () {
+    const res = yield projects_model_1.Project.findOne({ slug: slug });
+    return res;
+});
