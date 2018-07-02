@@ -92,16 +92,18 @@ class ProjectRouter extends ModelRouter<Project> {
         }).catch(next)
     }
 
-    /*addApply = (req, res, next) => {
-        var update = { $push: {
+    addApply = (req, res, next) => {
+        var update = {
             apply: {
-            answer1: req.body.answer1,
-            answer2: req.body.answer2,
-            academic: req.body.academic
+                name: req.body.name,
+                email: req.body.email,
+                answer1: req.body.answer1,
+                answer2: req.body.answer2,
+                academic: req.body.academic
             }
-         } }
-        this.model.updateOne(req.params.id, update)
-    }*/
+         } 
+        this.model.updateOne(req.params.id, req.body)
+    }
 
     applyRoutes(application: restify.Server) {
         application.get(`${this.basePath}`, this.findAll)
@@ -115,7 +117,7 @@ class ProjectRouter extends ModelRouter<Project> {
         application.get(`${this.basePath}/:id/news`, [this.validadeId, this.findNews])
         application.put(`${this.basePath}/:id/news`, [this.validadeId, this.replaceNews])
 
-        application.patch(`${this.basePath}/:id/apply`, [this.validadeId, controller.addApply])
+        application.patch(`${this.basePath}/:id/apply`, [this.validadeId, this.addApply])
         application.get(`${this.basePath}/:id/apply`, [this.validadeId, controller.addApply])
 
         //application.get(`${this.basePath}/:id/apply`, [this.validadeId, this.findApply])

@@ -19,6 +19,12 @@ const newsSchema = new mongoose.Schema({
     }
 });
 const applySchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    email: {
+        type: String
+    },
     answer1: {
         type: String
     },

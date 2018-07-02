@@ -10,6 +10,8 @@ export interface News extends mongoose.Document {
 }
 
 export interface Apply extends mongoose.Document {
+    name: string,
+    email: string,
     answer1: string,
     answer2: string,
     academic: string
@@ -50,6 +52,12 @@ const newsSchema = new mongoose.Schema({
 })
 
 const applySchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    email: {
+        type: String
+    },
     answer1: {
         type: String
     },
